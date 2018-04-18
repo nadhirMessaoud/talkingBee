@@ -1,14 +1,104 @@
+<link href="//code.ionicframework.com/nightly/css/ionic.css" rel="stylesheet">
+<script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
+
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      TalkToBee
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+
+
+<ion-content>
+
+  <!--   class="content-stable" on-swipe-left="hideTime = false" on-swipe-right="hideTime = true"
+ -->
+  <!--   <input ion-text type="text" [(ngModel)]="question">
+
+  <button ion-button (click)="ask(question)">
+    Ask
+  </button>
+
+  <div>
+    {{answer}}
+  </div>
+ -->
+     
+ <!--  
+  <ng-container *ngIf="messages.lenght > 0">
+
+    <div *ngFor="message of messages" [ngClass]="{other: message.userId != myId}" class="messages">
+
+      <div class='message'>
+        <span>{{ message.text }}</span>
+      </div>
+  <div class="time" [ng-class]="{'slide-right': hideTime, '': !hideTime}">{{message.time}}</div>
+ 
+
+
+    </div>
+  </ng-container>
+-->
+  <ion-scroll scrollX="true" direction="x">
+
+    <ion-card *ngFor="let item of newsArray; let i = index" (click)=open(item)>
+
+      <ion-item>
+        <ion-avatar item-start>
+          <img [src]="item.urlToImage">
+        </ion-avatar>
+        <h2>{{item.source.name}}</h2>
+        <p>{{item.publishedAt}}</p>
+      </ion-item>
+
+      <img [src]='item.urlToImage'>
+
+      <ion-card-content>
+        <p>{{item.description}}</p>
+      </ion-card-content>
+
+      <ion-row>
+        <ion-col>
+          <button ion-button color="primary" clear small icon-start>
+            <ion-icon name='book'></ion-icon>
+            Lire l'article
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="primary" clear small icon-start>
+            <ion-icon name='share-alt'></ion-icon>
+            Partager
+          </button>
+        </ion-col>
+        <ion-col center text-center>
+          <ion-note>
+            11h ago
+          </ion-note>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </ion-scroll>
+
 </ion-content>
+
+
+
+
+
+
+
+<ion-footer>
+  <ion-toolbar keyboard-attach class="bar-stable item-input-inset">
+
+    <label class="item-input-wrapper">
+      <input ion-text clearInput type="text" placeholder="Type your message" [(ngModel)]="question" on-return="sendMessage(question)"
+        on-focus="inputUp()" on-blur="inputDown()" />
+    </label>
+    <button ion-button icon-end (click)="ask(question)">
+      AskBee
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
+  </ion-toolbar>
+</ion-footer>
