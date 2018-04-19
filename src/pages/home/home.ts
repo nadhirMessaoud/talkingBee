@@ -145,6 +145,7 @@ this.newsArray = tmp;
 
   }
 
+  
   openNews(item: News) {
     this.navCtrl.push('NewsDetailPage', {
       item: item
