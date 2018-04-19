@@ -1,6 +1,9 @@
 import { Component, NgZone } from '@angular/core';
 import { News } from '../../models/news';
 import { Platform, NavController } from 'ionic-angular';
+import { isObject, isString } from 'ionic-angular/util/util';
+import { JsonPipe } from '@angular/common';
+import { Type } from '@angular/compiler/src/output/output_ast';
 declare var ApiAIPromises: any;
 @Component({
   selector: 'page-home',
@@ -10,6 +13,7 @@ declare var ApiAIPromises: any;
 export class HomePage {
   answer;
   whatever;
+  question;
   data = {};
   myId = '12345';
   messagesList : any[];
@@ -19,6 +23,7 @@ export class HomePage {
   newsArray: any[];
   currentNews: News[];
   constructor(public navCtrl: NavController,public platform: Platform, public ngZone: NgZone) {
+    this.messagesList = new Array();
     platform.ready().then(() => {
 
       ApiAIPromises.init({
@@ -68,25 +73,64 @@ this.newsArray = tmp;
       console.log("first slide");
     }
   }
-  sendMessage(question) {
+  sendMessage() {
     var d = new Date();
     var dateNow = d.toLocaleTimeString().replace(/:\d+ /, ' ');
 
     this.messagesList.push({
-      userId: true ? '12345' : '54321',
-      text: question,
+      userId: '12345' ,
+      text: this.question,
       time: dateNow
     });
+    delete this.question;
+    
   }
 
   ask(question) {
+   /*  var d = new Date();
+    var dateNow = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+    this.messagesList.push({
+      userId: '12345' ,
+      text: question,
+      time: dateNow
+    }); */
+    console.log('Asking question: ' +question + '\n');
+    var displayDate = new Date().toLocaleDateString();
     ApiAIPromises.requestText({
       query: question
     })
       .then(({ result: { fulfillment: { speech } } }) => {
         this.ngZone.run(() => {
-          this.answer = speech;
-          this.newsArray = JSON.parse(speech).articles;
+
+          console.log('Responding speech : ' + speech + '\n');
+
+          
+         // var tmp = JSON.parse(speech);
+          //console.log('Responding speech Object: ' +JSON.stringify(tmp) + '\n');
+          if(speech.indexOf('{')<0){
+          //this.answer = speech;
+          this.messagesList.push({
+            userId: '54321' ,
+            text: speech,
+            time: displayDate
+          });
+          //console.log('Responding answer: ' +this.answer + '\n');
+
+        }else{
+          this.messagesList.push({
+            userId: '54321' ,
+            text: 'There are my news for yOu !',
+            time: displayDate
+          });
+          var tmp = JSON.parse(speech);
+          this.newsArray = tmp.articles;
+
+          //console.log('Responding answer: ' + JSON.stringify(speech) + '\n');
+          document.getElementById('myHtml').innerHTML = 'card.html';
+         
+        }
+          
+
         });
       })
   }
@@ -101,7 +145,7 @@ this.newsArray = tmp;
 
   }
 
-  openItem(item: News) {
+  openNews(item: News) {
     this.navCtrl.push('NewsDetailPage', {
       item: item
     });

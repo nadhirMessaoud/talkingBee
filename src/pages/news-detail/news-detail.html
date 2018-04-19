@@ -1,18 +1,20 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ news.name }}</ion-title>
+    <ion-title>{{item.source.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-  <div class="news-profile" text-center #profilePic [style.background-image]="'url(' + item.profilePic + ')'">
+    <img [src]='item.urlToImage'>
+  <!-- <div class="news-profile" text-center #profilePic [style.background-image]="'url(' + + ')'">
   </div>
-
-  <div class="news-detail" padding>
-    <h2>{{news.name}}</h2>
-    <p>{{news.about}}</p>
-  </div>
+ -->
+<!--   <div class="news-detail" padding>
+    </div> -->
+    <h2>{{item.source.name}}</h2>
+    <p>{{item.description}}</p>
+ 
 </ion-content>

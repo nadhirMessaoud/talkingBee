@@ -11,7 +11,7 @@
 
 
 
-<ion-content>
+<ion-content class="content-stable" on-swipe-left="hideTime = false" on-swipe-right="hideTime = true">
 
   <!--   class="content-stable" on-swipe-left="hideTime = false" on-swipe-right="hideTime = true"
  -->
@@ -25,8 +25,8 @@
     {{answer}}
   </div>
  -->
-     
- <!--  
+
+  <!--  
   <ng-container *ngIf="messages.lenght > 0">
 
     <div *ngFor="message of messages" [ngClass]="{other: message.userId != myId}" class="messages">
@@ -41,9 +41,27 @@
     </div>
   </ng-container>
 -->
+
+
+  <div *ngFor="let msg of messagesList" [ngClass]="{other: msg.userId != myId}" class="messages">
+
+
+    <div class="message" [ngClass]="{'slide-right': hideTime, '': !hideTime}">
+    <div id='msgId'>
+      <span>{{msg.text}}</span>
+    </div>
+    </div>
+
+    <div class="time" [ngClass]="{'slide-right': hideTime, '': !hideTime}">{{msg.time}}</div>
+
+  </div>
+
+
+
+
   <ion-scroll scrollX="true" direction="x">
 
-    <ion-card *ngFor="let item of newsArray; let i = index" (click)=open(item)>
+    <ion-card *ngFor="let item of newsArray; let i = index">
 
       <ion-item>
         <ion-avatar item-start>
@@ -52,16 +70,18 @@
         <h2>{{item.source.name}}</h2>
         <p>{{item.publishedAt}}</p>
       </ion-item>
-
-      <img [src]='item.urlToImage'>
-
+      <div class="card-wrap">
+        <div class="card full-card">
+          <img [src]='item.urlToImage'>
+        </div>
+      </div>
       <ion-card-content>
         <p>{{item.description}}</p>
       </ion-card-content>
 
       <ion-row>
         <ion-col>
-          <button ion-button color="primary" clear small icon-start>
+          <button ion-button color="primary" clear small icon-start (click)="openNews(item)">
             <ion-icon name='book'></ion-icon>
             Lire l'article
           </button>
@@ -93,12 +113,15 @@
   <ion-toolbar keyboard-attach class="bar-stable item-input-inset">
 
     <label class="item-input-wrapper">
-      <input ion-text clearInput type="text" placeholder="Type your message" [(ngModel)]="question" on-return="sendMessage(question)"
-        on-focus="inputUp()" on-blur="inputDown()" />
+      <input ion-text clearInput type="text" placeholder="Type your message" [(ngModel)]="question" on-return="sendMessage()" on-focus="inputUp()"
+        on-blur="inputDown()" />
     </label>
-    <button ion-button icon-end (click)="ask(question)">
-      AskBee
-      <ion-icon name="arrow-forward"></ion-icon>
-    </button>
+    <ion-buttons right>
+      <button ion-button icon-end (click)="ask(question); sendMessage(question)">
+        AskBee
+        <ion-icon name="send"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-footer>

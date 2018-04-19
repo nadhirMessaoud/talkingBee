@@ -1,0 +1,41 @@
+<ion-scroll scrollX="true" direction="x">
+
+    <ion-card *ngFor="let item of newsArray; let i = index">
+
+      <ion-item>
+        <ion-avatar item-start>
+          <img [src]="item.urlToImage">
+        </ion-avatar>
+        <h2>{{item.source.name}}</h2>
+        <p>{{item.publishedAt}}</p>
+      </ion-item>
+      <div class="card-wrap">
+        <div class="card full-card">
+          <img [src]='item.urlToImage'>
+        </div>
+      </div>
+      <ion-card-content>
+        <p>{{item.description}}</p>
+      </ion-card-content>
+
+      <ion-row>
+        <ion-col>
+          <button ion-button color="primary" clear small icon-start (click)="openNews(item)">
+            <ion-icon name='book'></ion-icon>
+            Lire l'article
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="primary" clear small icon-start>
+            <ion-icon name='share-alt'></ion-icon>
+            Partager
+          </button>
+        </ion-col>
+        <ion-col center text-center>
+          <ion-note>
+            11h ago
+          </ion-note>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </ion-scroll>
